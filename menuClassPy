@@ -1,0 +1,7 @@
+import pygame
+
+class main_screen():
+
+
+    def Draw_outlines(self):
+        return 0
