@@ -1,0 +1,92 @@
+import pygame, sys, fileinput
+import pygame.gfxdraw
+pygame.init()
+
+
+black = (0,0,0)
+white = (255,255,255)
+red = (255,0,0)
+green = (0,255,0)
+blue = (0,0,255)
+
+size = [800,600]
+screen = pygame.display.set_mode(size)
+pygame.display.set_caption("SuperSim")
+
+
+#load images under here
+alert_pannel=pygame.image.load("alert_pannel.png").convert()
+alert_background=pygame.image.load("alert_background.png").convert()
+alert_scroll=pygame.image.load("alert_scroll.png").convert()
+clock_timer=pygame.image.load("Clock_fulll.png").convert()
+
+#load sound under here
+
+#variables under here
+maplistWorld = list([])
+Flag1=True
+Flag2int=0
+#def/functions under here
+
+#classes under here
+def draw_map(Flag1,Flag2int,maplistWorld):
+    
+    pygame.gfxdraw.rectangle(screen,[600,400,800,600],black)
+    
+    # working on a way to break this loop
+    
+    if Flag1 == True:
+        with fileinput.input(files=("100x20SimMap.txt")) as f:
+            for line in f:
+                maplistWorld=([line])     
+                if fileinput.lineno()==19:
+                    fileinput.close()
+                    Flag1=False
+                    
+                    
+    if Flag1 == False and Flag2int < 20:
+        Flag2int=Flag2int+1
+        return Flag2int
+        print(maplistWorld)
+        
+                
+def draw_timer():
+    pygame.Surface.blit(screen,clock_timer,[800-150,0-150])
+    
+
+def draw_charUpdate(x_offset,x2_offset):
+    while x_offset <= 100:
+        pygame.draw.line(screen,black,[x_offset,0],[x2_offset,125],2)
+        x_offset+=5
+        x2_offset+=5
+        pygame.draw.line(screen,white,[x_offset,0],[x2_offset,125],5)
+        
+def draw_scroll():
+    pygame.Surface.blit(screen,alert_background,[3,3])
+    pygame.Surface.blit(screen,alert_pannel,[5,5])
+    pygame.Surface.blit(screen,alert_scroll,[160,0])
+    pygame.draw.rect(screen,black,[0,0,158,175],5)
+    
+
+done = False
+
+clock = pygame.time.Clock()
+
+#----------Main Game Loop---------
+while done==False:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+        
+
+
+    screen.fill(white)
+#---Draw code goes under here----------
+    #draw_charUpdate(0,0)
+    draw_timer()
+    draw_map(Flag1,Flag2int,maplistWorld)
+    draw_scroll()
+    
+    pygame.display.flip()
+    clock.tick(20)
+pygame.quit()
